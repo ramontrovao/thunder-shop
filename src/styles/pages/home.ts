@@ -42,6 +42,7 @@ export const Product = styled("a", {
     transition: "all 0.15s ease-in-out",
 
     strong: {
+      color: "$gray100",
       fontSize: "$lg",
     },
 
