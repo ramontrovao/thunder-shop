@@ -1,6 +1,7 @@
 import { HomeContainer, Product } from "../styles/pages/home";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 import { useKeenSlider } from "keen-slider/react";
 
@@ -35,26 +36,38 @@ export default function Home({ products }: HomeProps) {
   });
 
   return (
-    <HomeContainer ref={sliderRef} className="keen-slider">
-      {products.map((product) => (
-        <Link href={`/product/${product.id}`} key={product.id}>
-          <Product className="keen-slider__slide">
-            <Image src={product.imageUrl} width={520} height={480} alt="" />
+    <>
+      <Head>
+        <title>Home | Ignite Shop</title>
+      </Head>
 
-            <footer>
-              <strong>{product.name}</strong>
+      <HomeContainer ref={sliderRef} className="keen-slider">
+        {products.map((product) => (
+          <Link
+            href={`/product/${product.id}`}
+            key={product.id}
+            prefetch={false}
+          >
+            <Product className="keen-slider__slide">
+              <Image src={product.imageUrl} width={520} height={480} alt="" />
 
-              <span>{product.price}</span>
-            </footer>
-          </Product>
-        </Link>
-      ))}
-    </HomeContainer>
+              <footer>
+                <strong>{product.name}</strong>
+
+                <span>{product.price}</span>
+              </footer>
+            </Product>
+          </Link>
+        ))}
+      </HomeContainer>
+    </>
   );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   // dont have access to context of req (req, res, cookies)
+
+  // get products with default price expanded
   const response = await stripe.products.list({
     expand: ["data.default_price"],
   });
@@ -77,6 +90,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       products,
     },
-    revalidate: 60 * 60 * 2,
+    revalidate: 60 * 60 * 2, // revalidate every 2 hours
   };
 };
