@@ -48,27 +48,34 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite Shop</title>
       </Head>
 
-      <HomeContainer ref={sliderRef} className="keen-slider">
-        {products.map((product) => (
-          <Product className="keen-slider__slide" key={product.id}>
-            <Link href={`/product/${product.id}`} prefetch={false}>
-              <Image src={product.imageUrl} width={520} height={480} alt="" />
-            </Link>
+      {!products ? (
+        <p>Carregando...</p>
+      ) : (
+        <HomeContainer ref={sliderRef} className="keen-slider">
+          {products.map((product) => (
+            <Product className="keen-slider__slide" key={product.id}>
+              <Link href={`/product/${product.id}`} prefetch={false}>
+                <Image src={product.imageUrl} width={520} height={480} alt="" />
+              </Link>
 
-            <footer>
-              <div>
-                <strong>{product.name}</strong>
+              <footer>
+                <div>
+                  <strong>{product.name}</strong>
 
-                <span>{parseToBrl(Number(product.price))}</span>
-              </div>
+                  <span>{parseToBrl(Number(product.price))}</span>
+                </div>
 
-              <button>
-                <Handbag size={25} onClick={() => handleAddProduct(product)} />
-              </button>
-            </footer>
-          </Product>
-        ))}
-      </HomeContainer>
+                <button>
+                  <Handbag
+                    size={25}
+                    onClick={() => handleAddProduct(product)}
+                  />
+                </button>
+              </footer>
+            </Product>
+          ))}
+        </HomeContainer>
+      )}
     </>
   );
 }

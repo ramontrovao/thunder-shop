@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, ReactNode, useState } from "react";
-import { toEditorSettings } from "typescript";
 
 type ProductType = {
   id: string;
