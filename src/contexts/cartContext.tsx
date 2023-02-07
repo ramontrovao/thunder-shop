@@ -54,6 +54,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       setIsCreatingCheckoutSession(false);
       // best choose -> datadog / sentry
 
+      console.log(err);
+
       alert("Falha ao redirecionar ao checkout!");
     }
   }
