@@ -49,7 +49,7 @@ export default function Home({ products }: HomeProps) {
       </Head>
 
       {!products ? (
-        <p>Carregando...</p>
+        <p>Carregando..</p>
       ) : (
         <HomeContainer ref={sliderRef} className="keen-slider">
           {products.map((product) => (
