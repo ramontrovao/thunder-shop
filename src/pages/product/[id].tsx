@@ -31,46 +31,38 @@ export default function Product({
 }: ProductProps) {
   const { handleAddProduct } = useContext(CartContext);
 
-  const { isFallback } = useRouter();
-
   return (
     <>
-      {isFallback ? (
-        <p>Carregando...</p>
-      ) : (
-        <>
-          <Head>
-            <title>{name} | Ignite Shop</title>
-          </Head>
+      <Head>
+        <title>{name} | Ignite Shop</title>
+      </Head>
 
-          <ProductContainer>
-            <ImageContainer>
-              <Image src={imageUrl} width={520} height={480} alt="" />
-            </ImageContainer>
+      <ProductContainer>
+        <ImageContainer>
+          <Image src={imageUrl} width={520} height={480} alt="" />
+        </ImageContainer>
 
-            <ProductDetails>
-              <h1>{name}</h1>
-              <span>{parseToBrl(Number(price))}</span>
+        <ProductDetails>
+          <h1>{name}</h1>
+          <span>{parseToBrl(Number(price))}</span>
 
-              <p>{description}</p>
+          <p>{description}</p>
 
-              <button
-                onClick={() =>
-                  handleAddProduct({
-                    id: id,
-                    name: name,
-                    imageUrl: imageUrl,
-                    price: price,
-                    priceId,
-                  })
-                }
-              >
-                Comprar agora
-              </button>
-            </ProductDetails>
-          </ProductContainer>
-        </>
-      )}
+          <button
+            onClick={() =>
+              handleAddProduct({
+                id: id,
+                name: name,
+                imageUrl: imageUrl,
+                price: price,
+                priceId,
+              })
+            }
+          >
+            Comprar agora
+          </button>
+        </ProductDetails>
+      </ProductContainer>
     </>
   );
 }
@@ -78,7 +70,7 @@ export default function Product({
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
-    fallback: false,
+    fallback: "blocking",
   };
 };
 
