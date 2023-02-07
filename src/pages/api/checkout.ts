@@ -24,8 +24,6 @@ export default async function handler(
     res.status(400).json({ error: "Products not found." });
   }
 
-  console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
-
   const successUrl = `${process.env.NEXT_PUBLIC_VERCEL_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${process.env.NEXT_PUBLIC_VERCEL_URL}/`;
 
