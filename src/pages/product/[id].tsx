@@ -36,7 +36,7 @@ export default function Product({
   return (
     <>
       {isFallback ? (
-        <p>Carregando..</p>
+        <p>Carregando...</p>
       ) : (
         <>
           <Head>
