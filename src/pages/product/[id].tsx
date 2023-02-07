@@ -34,11 +34,7 @@ export default function Product({
   return (
     <>
       <Head>
-        {name ? (
-          <title>{name} | Ignite Shop</title>
-        ) : (
-          <title>Ignite Shop</title>
-        )}
+        <title>Ignite Shop</title>
       </Head>
 
       <ProductContainer>
