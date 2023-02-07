@@ -9,6 +9,7 @@ import { parseToBrl } from "@/src/utils/parseToBrl";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { title } from "process";
 import { useContext } from "react";
 import Stripe from "stripe";
@@ -31,38 +32,46 @@ export default function Product({
 }: ProductProps) {
   const { handleAddProduct } = useContext(CartContext);
 
+  const { isFallback } = useRouter();
+
   return (
     <>
-      <Head>
-        <title>Ignite Shop</title>
-      </Head>
+      {isFallback ? (
+        <p>Carregando...</p>
+      ) : (
+        <>
+          <Head>
+            <title>{name} | Ignite Shop</title>
+          </Head>
 
-      <ProductContainer>
-        <ImageContainer>
-          <Image src={imageUrl} width={520} height={480} alt="" />
-        </ImageContainer>
+          <ProductContainer>
+            <ImageContainer>
+              <Image src={imageUrl} width={520} height={480} alt="" />
+            </ImageContainer>
 
-        <ProductDetails>
-          <h1>{name}</h1>
-          <span>{parseToBrl(Number(price))}</span>
+            <ProductDetails>
+              <h1>{name}</h1>
+              <span>{parseToBrl(Number(price))}</span>
 
-          <p>{description}</p>
+              <p>{description}</p>
 
-          <button
-            onClick={() =>
-              handleAddProduct({
-                id: id,
-                name: name,
-                imageUrl: imageUrl,
-                price: price,
-                priceId,
-              })
-            }
-          >
-            Comprar agora
-          </button>
-        </ProductDetails>
-      </ProductContainer>
+              <button
+                onClick={() =>
+                  handleAddProduct({
+                    id: id,
+                    name: name,
+                    imageUrl: imageUrl,
+                    price: price,
+                    priceId,
+                  })
+                }
+              >
+                Comprar agora
+              </button>
+            </ProductDetails>
+          </ProductContainer>
+        </>
+      )}
     </>
   );
 }
