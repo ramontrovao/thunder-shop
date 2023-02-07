@@ -1,76 +1,62 @@
+import { CartContext } from "@/src/contexts/cartContext";
 import { stripe } from "@/src/lib/stripe";
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from "@/src/styles/pages/products";
-import axios from "axios";
+import { parseToBrl } from "@/src/utils/parseToBrl";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import Stripe from "stripe";
 
+type ProductType = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: string;
+  description: string;
+  priceId: string;
+};
+
 interface ProductProps {
-  product: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-    description: string;
-    defaultPriceId: string;
-  };
+  product: ProductType;
 }
 
-export default function Product({ product }: ProductProps) {
-  const { isFallback } = useRouter();
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false);
-
-  if (isFallback) {
-    return <p>Loading...</p>;
-  }
-
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
-
-      const response = await axios.post("/api/checkout", {
-        priceId: product.defaultPriceId,
-      });
-
-      const { checkoutUrl } = response.data;
-
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      setIsCreatingCheckoutSession(false);
-      // best choose -> datadog / sentry
-
-      alert("Falha ao redirecionar ao checkout!");
-    }
-  }
+export default function Product({
+  product: { name, imageUrl, price, description, id, priceId },
+}: ProductProps) {
+  const { handleAddProduct } = useContext(CartContext);
 
   return (
     <>
       <Head>
-        <title>{product.name} | Ignite Shop</title>
+        <title>{name} | Ignite Shop</title>
       </Head>
 
       <ProductContainer>
         <ImageContainer>
-          <Image src={product.imageUrl} width={520} height={480} alt="" />
+          <Image src={imageUrl} width={520} height={480} alt="" />
         </ImageContainer>
 
         <ProductDetails>
-          <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <h1>{name}</h1>
+          <span>{parseToBrl(Number(price))}</span>
 
-          <p>{product.description}</p>
+          <p>{description}</p>
 
           <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}
+            onClick={() =>
+              handleAddProduct({
+                id: id,
+                name: name,
+                imageUrl: imageUrl,
+                price: price,
+                priceId,
+              })
+            }
           >
             Comprar agora
           </button>
@@ -104,11 +90,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         name: product.name,
         description: product.description,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat("pt-br", {
-          style: "currency",
-          currency: "BRL",
-        }).format(price.unit_amount! / 100),
-        defaultPriceId: price.id,
+        price: Number((price.unit_amount as number) / 100),
+        priceId: price.id,
       },
     },
     revalidate: 60 * 60 * 1, // 1 hour on cache

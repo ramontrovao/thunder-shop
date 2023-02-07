@@ -9,6 +9,10 @@ import "keen-slider/keen-slider.min.css";
 import { stripe } from "../lib/stripe";
 import Stripe from "stripe";
 import { GetStaticProps } from "next";
+import { Handbag } from "phosphor-react";
+import { useContext } from "react";
+import { CartContext } from "../contexts/cartContext";
+import { parseToBrl } from "../utils/parseToBrl";
 
 interface HomeProps {
   products: Array<{
@@ -16,10 +20,13 @@ interface HomeProps {
     name: string;
     imageUrl: string;
     price: string;
+    priceId: string;
   }>;
 }
 
 export default function Home({ products }: HomeProps) {
+  const { handleAddProduct } = useContext(CartContext);
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 2.5,
@@ -43,21 +50,23 @@ export default function Home({ products }: HomeProps) {
 
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map((product) => (
-          <Link
-            href={`/product/${product.id}`}
-            key={product.id}
-            prefetch={false}
-          >
-            <Product className="keen-slider__slide">
+          <Product className="keen-slider__slide" key={product.id}>
+            <Link href={`/product/${product.id}`} prefetch={false}>
               <Image src={product.imageUrl} width={520} height={480} alt="" />
+            </Link>
 
-              <footer>
+            <footer>
+              <div>
                 <strong>{product.name}</strong>
 
-                <span>{product.price}</span>
-              </footer>
-            </Product>
-          </Link>
+                <span>{parseToBrl(Number(product.price))}</span>
+              </div>
+
+              <button>
+                <Handbag size={25} onClick={() => handleAddProduct(product)} />
+              </button>
+            </footer>
+          </Product>
         ))}
       </HomeContainer>
     </>
@@ -74,15 +83,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const products = response.data.map((product) => {
     const price = product.default_price as Stripe.Price;
+    const priceId = price.id;
 
     return {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat("pt-br", {
-        style: "currency",
-        currency: "BRL",
-      }).format(price.unit_amount! / 100),
+      price: Number((price.unit_amount as number) / 100),
+      priceId: priceId,
     };
   });
 

@@ -2,21 +2,31 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Stripe from "stripe";
 import { stripe } from "../lib/stripe";
-import { ImageContainer, SuccessContainer } from "../styles/pages/success";
+import {
+  ImageContainer,
+  ImageWrapper,
+  SuccessContainer,
+} from "../styles/pages/success";
 
+type ProductType = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: {
+    product: {
+      images: Array<string>;
+    };
+  };
+  description: string;
+  priceId: string;
+};
 interface SuccessProps {
   costumerName: string;
-  product: {
-    name: string;
-    imageUrl: string;
-  };
+  products: Array<ProductType>;
 }
 
-export default function Success(props: SuccessProps) {
-  const { costumerName, product } = props;
-
+export default function Success({ costumerName, products }: SuccessProps) {
   return (
     <>
       <Head>
@@ -28,13 +38,23 @@ export default function Success(props: SuccessProps) {
       <SuccessContainer>
         <h1>Compra efetuada</h1>
 
-        <ImageContainer>
-          <Image src={product.imageUrl} width={120} height={110} alt="" />
-        </ImageContainer>
+        <ImageWrapper>
+          {products.map((prod) => (
+            <ImageContainer key={prod.id}>
+              <Image
+                src={prod.price.product.images[0]}
+                width={120}
+                height={110}
+                alt=""
+              />
+            </ImageContainer>
+          ))}
+        </ImageWrapper>
 
         <p>
-          Uhuul <strong>{costumerName}</strong>, sua{" "}
-          <strong>{product.name}</strong> já está a caminho da sua casa!
+          Uhuul <strong>{costumerName}</strong>, sua compra de{" "}
+          <strong>{products.length}</strong> camisetas já está a caminho da sua
+          casa!
         </p>
 
         <Link href="/">Voltar ao catálogo</Link>
@@ -62,15 +82,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   });
 
   const costumerName = session.customer_details?.name;
-  const product = session.line_items?.data[0].price?.product as Stripe.Product;
+  const products = session.line_items?.data;
 
   return {
     props: {
       costumerName,
-      product: {
-        name: product.name,
-        imageUrl: product.images[0],
-      },
+      products,
     },
   };
 };

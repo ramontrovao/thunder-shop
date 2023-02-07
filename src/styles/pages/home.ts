@@ -1,3 +1,4 @@
+import { FileX } from "phosphor-react";
 import { styled } from "..";
 
 export const HomeContainer = styled("main", {
@@ -51,9 +52,31 @@ export const Product = styled("div", {
       fontWeight: "bold",
       color: "$green300",
     },
+
+    div: {
+      display: "flex",
+      flexDirection: "column",
+    },
+
+    button: {
+      lineHeight: 0,
+      backgroundColor: "$green300",
+      color: "$gray100",
+      padding: "0.75rem",
+      border: 0,
+      borderRadius: 6,
+      cursor: "pointer",
+    },
   },
 
   "&:hover": {
+    footer: {
+      transform: "translateY(0%)",
+      opacity: "1",
+    },
+  },
+
+  "@media (max-width: 1024px)": {
     footer: {
       transform: "translateY(0%)",
       opacity: "1",

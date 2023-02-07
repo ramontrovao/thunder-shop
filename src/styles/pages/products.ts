@@ -6,15 +6,16 @@ export const ProductContainer = styled("main", {
   alignItems: "stretch",
   gap: "4rem",
   padding: "2.5rem",
-
-  maxWidth: 1180,
   margin: "0 auto",
+
+  "@media (max-width: 768px)": {
+    gridTemplateColumns: "1fr",
+    padding: "1rem",
+  },
 });
 
 export const ImageContainer = styled("div", {
-  width: "100%",
-  maxWidth: 576,
-  height: "656px",
+  minWidth: 200,
   background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
   borderRadius: 8,
   padding: "0.25rem",
@@ -24,7 +25,12 @@ export const ImageContainer = styled("div", {
   justifyContent: "center",
 
   img: {
+    minWidth: 250,
     objectFit: "cover",
+  },
+
+  "@media (max-width: 768px)": {
+    minWidth: "100%",
   },
 });
 
@@ -70,6 +76,10 @@ export const ProductDetails = styled("div", {
 
     "&:not(:disabled):hover": {
       backgroundColor: "$green300",
+    },
+
+    "@media (max-width: 768px)": {
+      marginTop: "1.5rem",
     },
   },
 });
