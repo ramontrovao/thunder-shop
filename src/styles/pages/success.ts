@@ -24,13 +24,13 @@ export const SuccessContainer = styled("main", {
   a: {
     display: "block",
     fontSize: "$lg",
-    color: "$green500",
+    color: "$pink500",
     textAlign: "center",
     marginTop: "3rem",
     textDecoration: "none",
 
     "&:hover": {
-      color: "$green300",
+      color: "$pink300",
     },
   },
 });
@@ -46,7 +46,7 @@ export const ImageWrapper = styled("div", {
 });
 
 export const ImageContainer = styled("div", {
-  background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
+  background: "linear-gradient(180deg, #FF597B 0%, #CF4DCE 100%)",
   borderRadius: 999,
   padding: "0.25rem",
   marginTop: "3rem",

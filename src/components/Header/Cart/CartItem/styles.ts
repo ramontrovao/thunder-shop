@@ -12,7 +12,7 @@ export const CartItemImageContainer = styled("div", {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
+  background: "linear-gradient(180deg, #FF597B 0%, #CF4DCE 100%)",
   borderRadius: "8px",
 });
 
@@ -23,7 +23,7 @@ export const CartItemInfosContainer = styled("div", {
   button: {
     width: "4rem",
     background: "transparent",
-    color: "$green500",
+    color: "$pink500",
     fontSize: "$md",
     border: 0,
     cursor: "pointer",

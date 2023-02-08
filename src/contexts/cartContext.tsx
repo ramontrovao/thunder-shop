@@ -12,7 +12,7 @@ type ProductType = {
 type CartContextType = {
   isCreatingCheckoutSession: boolean;
   products: Array<ProductType>;
-  handleAddProduct: (product: ProductType) => void;
+  handleAddProduct: (product: ProductType) => boolean;
   handleRemoveProduct: (productId: string) => void;
   handleBuyProducts: () => void;
 };
@@ -29,8 +29,11 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     useState(false);
 
   function handleAddProduct(product: ProductType) {
-    if (cart.find((item) => item.id === product.id)) return;
+    if (cart.find((item) => item.id === product.id)) return false;
+
     setCart((prev) => [...prev, product]);
+
+    return true;
   }
 
   function handleRemoveProduct(productId: string) {

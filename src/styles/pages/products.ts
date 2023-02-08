@@ -16,7 +16,7 @@ export const ProductContainer = styled("main", {
 
 export const ImageContainer = styled("div", {
   minWidth: 200,
-  background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
+  background: "linear-gradient(180deg, #FF597B 0%, #CF4DCE 100%)",
   borderRadius: 8,
   padding: "0.25rem",
 
@@ -47,7 +47,7 @@ export const ProductDetails = styled("div", {
     marginTop: "1rem",
     display: "block",
     fontSize: "$2xl",
-    color: "$green300",
+    color: "$pink300",
   },
 
   p: {
@@ -59,7 +59,7 @@ export const ProductDetails = styled("div", {
 
   button: {
     marginTop: "auto",
-    backgroundColor: "$green500",
+    backgroundColor: "$pink500",
     border: 0,
     color: "$white",
     borderRadius: 8,
@@ -75,7 +75,7 @@ export const ProductDetails = styled("div", {
     },
 
     "&:not(:disabled):hover": {
-      backgroundColor: "$green300",
+      backgroundColor: "$pink300",
     },
 
     "@media (max-width: 768px)": {

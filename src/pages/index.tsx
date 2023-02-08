@@ -13,19 +13,23 @@ import { Handbag } from "phosphor-react";
 import { useContext } from "react";
 import { CartContext } from "../contexts/cartContext";
 import { parseToBrl } from "../utils/parseToBrl";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+type ProductType = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: string;
+  priceId: string;
+};
 
 interface HomeProps {
-  products: Array<{
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-    priceId: string;
-  }>;
+  productsData: Array<ProductType>;
 }
 
-export default function Home({ products }: HomeProps) {
-  const { handleAddProduct } = useContext(CartContext);
+export default function Home({ productsData }: HomeProps) {
+  const { handleAddProduct, products } = useContext(CartContext);
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -42,17 +46,42 @@ export default function Home({ products }: HomeProps) {
     },
   });
 
+  function onAddProduct(product: ProductType) {
+    const add = handleAddProduct(product);
+
+    if (!add) {
+      toast.error(
+        "A função de adicionar mais de um item igual não está disponível!"
+      );
+    } else {
+      toast.success("Produto adicionado!");
+    }
+  }
+
   return (
     <>
       <Head>
         <title>Home | Ignite Shop</title>
       </Head>
 
-      {!products ? (
+      <ToastContainer
+        position="top-right"
+        autoClose={3500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
+      {!productsData ? (
         <p>Carregando..</p>
       ) : (
         <HomeContainer ref={sliderRef} className="keen-slider">
-          {products.map((product) => (
+          {productsData.map((product) => (
             <Product className="keen-slider__slide" key={product.id}>
               <Link href={`/product/${product.id}`} prefetch={false}>
                 <Image src={product.imageUrl} width={520} height={480} alt="" />
@@ -68,7 +97,9 @@ export default function Home({ products }: HomeProps) {
                 <button>
                   <Handbag
                     size={25}
-                    onClick={() => handleAddProduct(product)}
+                    onClick={() => {
+                      onAddProduct(product);
+                    }}
                   />
                 </button>
               </footer>
@@ -88,7 +119,7 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ["data.default_price"],
   });
 
-  const products = response.data.map((product) => {
+  const productsData = response.data.map((product) => {
     const price = product.default_price as Stripe.Price;
     const priceId = price.id;
 
@@ -103,7 +134,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      products,
+      productsData,
     },
     revalidate: 60 * 60 * 1, // revalidate every 1 hours
   };

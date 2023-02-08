@@ -33,7 +33,7 @@ export const TitleCardContainer = styled("header", {
 
 export const CartNotFilled = styled("p", {
   fontSize: "$lg",
-  color: "$green300",
+  color: "$pink300",
 });
 
 export const CartItems = styled("main", {
@@ -64,13 +64,18 @@ export const OrderInfosResume = styled("div", {
 });
 
 export const OrderInfosSubmitButton = styled("button", {
-  background: "$green500",
+  background: "$pink500",
   color: "$gray100",
   padding: "1.25rem 1rem",
   fontSize: "$md",
   cursor: "pointer",
   border: 0,
   borderRadius: 8,
+
+  "&:disabled": {
+    opacity: 0.4,
+    cursor: "wait",
+  },
 });
 
 export const AddToCartButton = styled(Dialog.Trigger, {
@@ -90,7 +95,7 @@ export const NumberOfCartItems = styled("div", {
   justifyContent: "center",
   alignItems: "center",
   marginLeft: "-0.75rem",
-  background: "$green500",
+  background: "$pink500",
   width: "1.25rem",
   height: "1.25rem",
   fontSize: "0.85rem",

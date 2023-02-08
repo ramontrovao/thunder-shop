@@ -9,7 +9,7 @@ export const HomeContainer = styled("main", {
 });
 
 export const Product = styled("div", {
-  background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
+  background: "linear-gradient(180deg, #FF597B 0%, #CF4DCE 100%)",
   borderRadius: 8,
   cursor: "pointer",
   position: "relative",
@@ -50,7 +50,7 @@ export const Product = styled("div", {
     span: {
       fontSize: "$xl",
       fontWeight: "bold",
-      color: "$green300",
+      color: "$pink300",
     },
 
     div: {
@@ -60,7 +60,7 @@ export const Product = styled("div", {
 
     button: {
       lineHeight: 0,
-      backgroundColor: "$green300",
+      backgroundColor: "$pink300",
       color: "$gray100",
       padding: "0.75rem",
       border: 0,
