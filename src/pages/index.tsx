@@ -61,7 +61,7 @@ export default function Home({ productsData }: HomeProps) {
   return (
     <>
       <Head>
-        <title>Home | Ignite Shop</title>
+        <title>Home | Thunder Shop</title>
       </Head>
 
       <ToastContainer

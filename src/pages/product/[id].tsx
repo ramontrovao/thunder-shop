@@ -9,7 +9,6 @@ import { parseToBrl } from "@/src/utils/parseToBrl";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useContext } from "react";
 import Stripe from "stripe";
 
@@ -34,7 +33,7 @@ export default function Product({
   return (
     <>
       <Head>
-        <title>{name} | Ignite Shop</title>
+        <title>{name} | Thunder Shop</title>
       </Head>
 
       <ProductContainer>
