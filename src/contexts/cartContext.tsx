@@ -1,5 +1,6 @@
 import axios from "axios";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 type ProductType = {
   id: string;
@@ -24,9 +25,22 @@ interface CartContextProviderProps {
 export const CartContext = createContext({} as CartContextType);
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
+  const { setLocalStorageItem, getLocalStorageItem } = useLocalStorage();
   const [cart, setCart] = useState(Array<ProductType>);
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
+
+  useEffect(() => {
+    const localCart = getLocalStorageItem("thunder-store-products", "1.0.0");
+
+    if (localCart.length > 0) {
+      setCart(localCart);
+    }
+  }, []);
+
+  useEffect(() => {
+    setLocalStorageItem("thunder-store-products", "1.0.0", cart);
+  }, [cart]);
 
   function handleAddProduct(product: ProductType) {
     if (cart.find((item) => item.id === product.id)) return false;
@@ -52,6 +66,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
       const { checkoutUrl } = response.data;
 
+      setCart([]);
       window.location.href = checkoutUrl;
     } catch (err) {
       setIsCreatingCheckoutSession(false);
