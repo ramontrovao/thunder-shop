@@ -36,7 +36,10 @@ export function Cart() {
   return (
     <Dialog.Root>
       <div>
-        <AddToCartButton>
+        <AddToCartButton
+          title="Ver carrinho de compras"
+          aria-label="Ver carrinho de compras"
+        >
           <Handbag size={25} />
         </AddToCartButton>
         <NumberOfCartItems>{products.length}</NumberOfCartItems>

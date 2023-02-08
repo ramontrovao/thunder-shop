@@ -3,7 +3,7 @@ import { getCssText } from "../styles";
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="pt-BR">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

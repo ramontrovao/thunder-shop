@@ -1,6 +1,4 @@
-import { HomeContainer, Product } from "../styles/pages/home";
-import Image from "next/image";
-import Link from "next/link";
+import { HomeContainer } from "../styles/pages/home";
 import Head from "next/head";
 
 import { useKeenSlider } from "keen-slider/react";
@@ -9,12 +7,9 @@ import "keen-slider/keen-slider.min.css";
 import { stripe } from "../lib/stripe";
 import Stripe from "stripe";
 import { GetStaticProps } from "next";
-import { Handbag } from "phosphor-react";
-import { useContext } from "react";
-import { CartContext } from "../contexts/cartContext";
-import { parseToBrl } from "../utils/parseToBrl";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Product } from "../components/Product";
 
 type ProductType = {
   id: string;
@@ -29,8 +24,6 @@ interface HomeProps {
 }
 
 export default function Home({ productsData }: HomeProps) {
-  const { handleAddProduct, products } = useContext(CartContext);
-
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 2.5,
@@ -45,18 +38,6 @@ export default function Home({ productsData }: HomeProps) {
       },
     },
   });
-
-  function onAddProduct(product: ProductType) {
-    const add = handleAddProduct(product);
-
-    if (!add) {
-      toast.error(
-        "A função de adicionar mais de um item igual não está disponível!"
-      );
-    } else {
-      toast.success("Produto adicionado!");
-    }
-  }
 
   return (
     <>
@@ -82,28 +63,7 @@ export default function Home({ productsData }: HomeProps) {
       ) : (
         <HomeContainer ref={sliderRef} className="keen-slider">
           {productsData.map((product) => (
-            <Product className="keen-slider__slide" key={product.id}>
-              <Link href={`/product/${product.id}`} prefetch={false}>
-                <Image src={product.imageUrl} width={520} height={480} alt="" />
-              </Link>
-
-              <footer>
-                <div>
-                  <strong>{product.name}</strong>
-
-                  <span>{parseToBrl(Number(product.price))}</span>
-                </div>
-
-                <button>
-                  <Handbag
-                    size={25}
-                    onClick={() => {
-                      onAddProduct(product);
-                    }}
-                  />
-                </button>
-              </footer>
-            </Product>
+            <Product product={product} key={product.id} />
           ))}
         </HomeContainer>
       )}

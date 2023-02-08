@@ -9,16 +9,18 @@ import { parseToBrl } from "@/src/utils/parseToBrl";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import Stripe from "stripe";
+import "react-toastify/dist/ReactToastify.css";
 
 type ProductType = {
   id: string;
   name: string;
   imageUrl: string;
   price: string;
-  description: string;
   priceId: string;
+  description: string;
 };
 
 interface ProductProps {
@@ -29,12 +31,38 @@ export default function Product({
   product: { name, imageUrl, price, description, id, priceId },
 }: ProductProps) {
   const { handleAddProduct } = useContext(CartContext);
+  const [productAlreadyOnCart, setProductAlreadyOnCart] = useState(false);
+
+  function onAddProduct(product: Omit<ProductType, "description">) {
+    const add = handleAddProduct(product);
+
+    if (!add) {
+      setProductAlreadyOnCart(true);
+      toast.error("O produto já existe no carrinho!");
+    } else {
+      setProductAlreadyOnCart(false);
+      toast.success("Produto adicionado!");
+    }
+  }
 
   return (
     <>
       <Head>
         <title>{name} | Thunder Shop</title>
       </Head>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
 
       <ProductContainer>
         <ImageContainer>
@@ -49,7 +77,7 @@ export default function Product({
 
           <button
             onClick={() =>
-              handleAddProduct({
+              onAddProduct({
                 id: id,
                 name: name,
                 imageUrl: imageUrl,
@@ -57,8 +85,9 @@ export default function Product({
                 priceId,
               })
             }
+            disabled={productAlreadyOnCart}
           >
-            Comprar agora
+            Adicionar ao carrinho
           </button>
         </ProductDetails>
       </ProductContainer>
