@@ -58,7 +58,7 @@ export default function Product({
               })
             }
           >
-            Comprar agora
+            Adicionar ao carrinho
           </button>
         </ProductDetails>
       </ProductContainer>
