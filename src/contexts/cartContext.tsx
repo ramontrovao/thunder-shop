@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 type ProductType = {
@@ -74,7 +75,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
       console.log(err);
 
-      alert("Falha ao redirecionar ao checkout!");
+      toast.error("Falha ao redirecionar ao carrinho");
     }
   }
 
