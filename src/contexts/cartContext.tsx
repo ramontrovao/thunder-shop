@@ -66,7 +66,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
       const { checkoutUrl } = response.data;
 
-      setCart([]);
+      setLocalStorageItem("thunder-store-products", "1.0.0", []);
       window.location.href = checkoutUrl;
     } catch (err) {
       setIsCreatingCheckoutSession(false);
